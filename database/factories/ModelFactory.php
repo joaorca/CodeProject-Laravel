@@ -36,12 +36,21 @@ $factory->define(CodeProject\Entities\Client::class,
 $factory->define(CodeProject\Entities\Project::class,
     function (Faker\Generator $faker) {
         return [
-            'owner_id'    => rand(1,10),
-            'client_id'   => rand(1,10),
+            'owner_id'    => rand(1, 10),
+            'client_id'   => rand(1, 10),
             'name'        => $faker->word,
             'description' => $faker->sentence,
-            'progress'    => rand(1,100),
-            'status'      => rand(1,3),
+            'progress'    => rand(1, 100),
+            'status'      => rand(1, 3),
             'due_date'    => $faker->date('now'),
+        ];
+    });
+
+$factory->define(CodeProject\Entities\ProjectNote::class,
+    function (Faker\Generator $faker) {
+        return [
+            'project_id' => rand(1, 10),
+            'title'      => $faker->word,
+            'note'       => $faker->paragraph,
         ];
     });
