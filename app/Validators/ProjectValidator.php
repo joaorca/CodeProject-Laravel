@@ -4,7 +4,7 @@ namespace CodeProject\Validators;
 
 use Prettus\Validator\LaravelValidator;
 
-class ProejctValidator extends LaravelValidator
+class ProjectValidator extends LaravelValidator
 {
 
     protected $rules = [
