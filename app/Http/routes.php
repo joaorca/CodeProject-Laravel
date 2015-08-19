@@ -19,24 +19,29 @@ Route::post('ouath/access_token', function () {
     return Response::json(Authorizer::issueAccessToken());
 });
 
-Route::get('client', [
-    'middleware' => 'oauth',
-    'uses'       => 'ClientController@index',
-]);
-Route::post('client', 'ClientController@store');
-Route::get('client/{id}', 'ClientController@show');
-Route::delete('client/{id}', 'ClientController@destroy');
-Route::put('client/{id}', 'ClientController@update');
+Route::group(['middleware' => 'oauth'], function () {
 
-Route::get('project/{id}/note', 'ProjectNoteController@index');
-Route::post('project/{id}/note', 'ProjectNoteController@store');
-Route::get('project/{id}/note/{noteId}', 'ProjectNoteController@show');
-Route::delete('project/{id}/note/{noteId}', 'ProjectNoteController@delete');
-Route::put('project/{id}/note/{noteId}', 'ProjectNoteController@update');
+    Route::resource('client', 'ClientController', [
+        'exept' => [
+            'create',
+            'edit',
+        ],
+    ]);
 
-Route::get('project', 'ProjectController@index');
-Route::post('project', 'ProjectController@store');
-Route::get('project/{id}', 'ProjectController@show');
-Route::delete('project/{id}', 'ProjectController@destroy');
-Route::put('project/{id}', 'ProjectController@update');
+    Route::group(['prefix' => 'project'], function () {
+        Route::resource('', 'ProjectController', [
+            'exept' => [
+                'create',
+                'edit',
+            ],
+        ]);
+
+        Route::get('{id}/note', 'ProjectNoteController@index');
+        Route::post('{id}/note', 'ProjectNoteController@store');
+        Route::get('/id}/note/{noteId}', 'ProjectNoteController@show');
+        Route::delete('{id}/note/{noteId}', 'ProjectNoteController@destroy');
+        Route::put('{id}/note/{noteId}', 'ProjectNoteController@update');
+    });
+
+});
 
