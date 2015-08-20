@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('ouath/access_token', function () {
+Route::post('oauth/access_token', function () {
     return Response::json(Authorizer::issueAccessToken());
 });
 
@@ -28,13 +28,14 @@ Route::group(['middleware' => 'oauth'], function () {
         ],
     ]);
 
+    Route::resource('project', 'ProjectController', [
+        'exept' => [
+            'create',
+            'edit',
+        ],
+    ]);
+
     Route::group(['prefix' => 'project'], function () {
-        Route::resource('', 'ProjectController', [
-            'exept' => [
-                'create',
-                'edit',
-            ],
-        ]);
 
         Route::get('{id}/note', 'ProjectNoteController@index');
         Route::post('{id}/note', 'ProjectNoteController@store');

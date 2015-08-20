@@ -59,6 +59,15 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
+        $userId = \Authorizer::getResourceOwnerId();
+
+        if ($this->repository->isOwner($id, $userId) == false) {
+            return [
+                'success',
+                false,
+            ];
+        }
+
         return $this->repository->find($id);
     }
 
@@ -71,7 +80,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->service->update($request->all(),$id);
+        $this->service->update($request->all(), $id);
     }
 
     /**
