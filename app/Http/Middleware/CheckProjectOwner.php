@@ -35,10 +35,7 @@ class CheckProjectOwner
         $projectId = $request->project;
 
         if ($this->repository->isOwner($projectId, $userId) == false) {
-            return [
-                'error',
-                'Access forbidden',
-            ];
+            return ['error' => 'Access forbidden'];
         }
 
         return $next($request);
